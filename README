@@ -8,13 +8,20 @@ Build Requirements:
 CMake > 3.9
 C99
 
-Library Requirements
+Requirements
 ====================
 
 C99 Standard Library
 
-Install steps
+Install steps (recommended)
 ===========
+
+The easiest way to use this is just to copy over the files and compile them
+along side your project.
+
+
+Library install steps
+=====================
 
 I recommend doing an "out of source build" so that CMake generated files don't
 pollute the root directory. The following steps will assume that you are
