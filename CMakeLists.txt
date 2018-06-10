@@ -22,6 +22,9 @@ set_target_properties(libclog
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wall -Wextra -Wpedantic \
+-Werror -Wshadow -Wstrict-overflow -fno-strict-aliasing")
+
 configure_file(libclog.pc.in libclog.pc @ONLY)
 
 target_include_directories(libclog PRIVATE include)
