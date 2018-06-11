@@ -8,6 +8,6 @@ enum LogLevel {
         LOG_WARNING,
         LOG_ERROR,
         LOG_CRITICAL
-}
+};
 
 #endif /* CLOG_H */
