@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.9)
 
-project(libclog
+project(clog
     VERSION 0.0.1
     DESCRIPTION "A simple C logging library"
     LANGUAGES C
@@ -8,11 +8,11 @@ project(libclog
 
 include(GNUInstallDirs)
 
-add_library(libclog SHARED
+add_library(clog SHARED
     src/clog.c
 )
 
-set_target_properties(libclog
+set_target_properties(clog
     PROPERTIES
     VERSION ${PROJECT_VERSION}
     SOVERSION 1
@@ -27,10 +27,10 @@ set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wall -Wextra -Wpedantic \
 
 configure_file(libclog.pc.in libclog.pc @ONLY)
 
-target_include_directories(libclog PRIVATE include)
-target_include_directories(libclog PRIVATE src)
+target_include_directories(clog PRIVATE include)
+target_include_directories(clog PRIVATE src)
 
-install(TARGETS libclog
+install(TARGETS clog
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
