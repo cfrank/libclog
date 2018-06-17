@@ -1,5 +1,4 @@
 #include <clog.h>
-#include <stdio.h>
 
 int main(void)
 {
