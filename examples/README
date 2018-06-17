@@ -1,5 +1,5 @@
 Compile instructions:
 =====================
 
-gcc simple.c -o simple -lclog -L"/usr/local/lib<ARCH>"
-./simple
+gcc simple.c -o simple.out -lclog -L"/usr/local/lib<ARCH>"
+./simple.out
