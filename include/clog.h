@@ -33,8 +33,8 @@
 #include <pthread.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
 
-typedef void (*output_func_t)(const char *message);
 typedef void (*error_func_t)(int error_status);
 
 enum log_level {
@@ -50,16 +50,17 @@ struct logger {
         enum log_level max_level;
         error_func_t error_handler_func;
         pthread_mutex_t *lock;
-        output_func_t output_logger_func;
+        FILE *stream;
         bool quiet;
 };
 
 struct logger *create_logger(void);
 void destroy_logger(struct logger *log);
 void set_logging_max_level(struct logger *log, enum log_level level);
-void set_error_func(struct logger *log, error_func_t error_handler_func);
-void set_output_func(struct logger *log, output_func_t output_logger_func);
-void set_quiet(struct logger *log, bool quiet);
+void set_logging_error_func(struct logger *log,
+                            error_func_t error_handler_func);
+void set_logging_stream(struct logger *log, FILE *stream);
+void set_logging_quiet(struct logger *log, bool quiet);
 void internal_logger(const struct logger *log, enum log_level level,
                      const char *file, uint32_t line, const char *fmt, ...);
 void internal_logger_short(const struct logger *log, enum log_level level,

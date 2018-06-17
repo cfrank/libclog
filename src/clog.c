@@ -51,7 +51,7 @@ struct logger *create_logger(void)
         pthread_mutex_init(lock, NULL);
 
         logger->lock = lock;
-        logger->output_logger_func = NULL;
+        logger->stream = stderr;
         logger->quiet = false;
 
         return logger;
@@ -69,17 +69,17 @@ void set_logging_max_level(struct logger *log, enum log_level level)
         log->max_level = level;
 }
 
-void set_error_func(struct logger *log, error_func_t error_handler_func)
+void set_logging_error_func(struct logger *log, error_func_t error_handler_func)
 {
         log->error_handler_func = error_handler_func;
 }
 
-void set_output_func(struct logger *log, output_func_t output_logger_func)
+void set_logging_stream(struct logger *log, FILE *stream)
 {
-        log->output_logger_func = output_logger_func;
+        log->stream = stream;
 }
 
-void set_quiet(struct logger *log, bool quiet)
+void set_logging_quiet(struct logger *log, bool quiet)
 {
         log->quiet = quiet;
 }
@@ -91,7 +91,7 @@ void internal_logger(const struct logger *log, enum log_level level,
                 return;
         }
 
-        fprintf(stderr, "%s:%d", file, line);
+        fprintf(log->stream, "%s:%d ", file, line);
 
         va_list args;
         va_start(args, fmt);
@@ -109,7 +109,7 @@ void internal_logger_short(const struct logger *log, enum log_level level,
 
         va_list args;
         va_start(args, fmt);
-        vfprintf(stderr, fmt, args);
+        vfprintf(log->stream, fmt, args);
         va_end(args);
         fprintf(stderr, "\n");
 }

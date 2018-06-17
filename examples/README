@@ -1,0 +1,5 @@
+Compile instructions:
+=====================
+
+gcc simple.c -o simple -lclog -L"/usr/local/lib<ARCH>"
+./simple
