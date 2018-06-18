@@ -46,10 +46,11 @@ enum log_level {
         LEVEL_CRITICAL
 };
 
-const char *log_level_to_string(enum log_level level);
+static const char *log_level_to_string(enum log_level level);
 enum log_level string_to_log_level(const char *level_string);
 
 struct logger {
+        const char *name;
         enum log_level max_level;
         error_func_t error_handler_func;
         pthread_mutex_t *lock;
@@ -57,8 +58,9 @@ struct logger {
         bool quiet;
 };
 
-struct logger *create_logger(void);
+struct logger *create_logger(const char *name);
 void destroy_logger(struct logger *log);
+const char *generate_logging_name(const char *name);
 void set_logging_max_level(struct logger *log, enum log_level level);
 void set_logging_error_func(struct logger *log,
                             error_func_t error_handler_func);

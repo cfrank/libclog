@@ -34,9 +34,9 @@
 
 #include "clog.h"
 
-const char *log_level_to_string(enum log_level level)
+static const char *log_level_to_string(enum log_level level)
 {
-        switch(level) {
+        switch (level) {
         case LEVEL_TRACE:
                 return "TRACE";
         case LEVEL_DEBUG:
@@ -54,7 +54,7 @@ const char *log_level_to_string(enum log_level level)
         }
 }
 
-struct logger *create_logger(void)
+struct logger *create_logger(const char *name)
 {
         struct logger *logger = malloc(sizeof(struct logger));
 
@@ -62,6 +62,8 @@ struct logger *create_logger(void)
                 // TODO: Handle error
                 return NULL;
         }
+
+        logger->name = name;
 
         /* Add some sensible defaults */
         logger->max_level = LEVEL_ERROR;
@@ -83,6 +85,15 @@ void destroy_logger(struct logger *log)
         free(log->lock);
 
         free(log);
+}
+
+const char *generate_logging_name(const char *name)
+{
+        if (name == NULL) {
+                return "CLOG";
+        }
+
+        return name;
 }
 
 void set_logging_max_level(struct logger *log, enum log_level level)
@@ -114,7 +125,12 @@ void internal_logger(const struct logger *log, enum log_level level,
 
         pthread_mutex_lock(log->lock);
 
-        fprintf(log->stream, "%s:%d %s ", file, line, log_level_to_string(level));
+        fprintf(log->stream,
+                "%s:%s [%s:%d] - ",
+                log_level_to_string(level),
+                generate_logging_name(log->name),
+                file,
+                line);
 
         va_list args;
         va_start(args, fmt);
@@ -133,10 +149,17 @@ void internal_logger_short(const struct logger *log, enum log_level level,
         }
 
         pthread_mutex_lock(log->lock);
+
+        fprintf(log->stream,
+                "%s:%s - ",
+                log_level_to_string(level),
+                generate_logging_name(log->name));
+
         va_list args;
         va_start(args, fmt);
         vfprintf(log->stream, fmt, args);
         va_end(args);
-        fprintf(stderr, "\n");
+        fprintf(log->stream, "\n");
+
         pthread_mutex_unlock(log->lock);
 }
