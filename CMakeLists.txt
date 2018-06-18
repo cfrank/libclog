@@ -18,6 +18,7 @@ set_target_properties(clog
     SOVERSION 1
     PUBLIC_HEADER include/clog.h
     C_STANDARD 99
+    C_EXTENSIONS OFF
 )
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

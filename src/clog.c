@@ -46,11 +46,10 @@ struct logger *create_logger(void)
         /* Add some sensible defaults */
         logger->max_level = LEVEL_ERROR;
         logger->error_handler_func = NULL;
+        logger->lock = malloc(sizeof(pthread_mutex_t));
 
-        pthread_mutex_t *lock = NULL;
-        pthread_mutex_init(lock, NULL);
+        pthread_mutex_init(logger->lock, NULL);
 
-        logger->lock = lock;
         logger->stream = stderr;
         logger->quiet = false;
 
@@ -60,6 +59,8 @@ struct logger *create_logger(void)
 void destroy_logger(struct logger *log)
 {
         pthread_mutex_destroy(log->lock);
+
+        free(log->lock);
 
         free(log);
 }
@@ -91,6 +92,7 @@ void internal_logger(const struct logger *log, enum log_level level,
                 return;
         }
 
+        pthread_mutex_lock(log->lock);
         fprintf(log->stream, "%s:%d ", file, line);
 
         va_list args;
@@ -98,6 +100,7 @@ void internal_logger(const struct logger *log, enum log_level level,
         vfprintf(stderr, fmt, args);
         va_end(args);
         fprintf(stderr, "\n");
+        pthread_mutex_unlock(log->lock);
 }
 
 void internal_logger_short(const struct logger *log, enum log_level level,
@@ -107,9 +110,11 @@ void internal_logger_short(const struct logger *log, enum log_level level,
                 return;
         }
 
+        pthread_mutex_lock(log->lock);
         va_list args;
         va_start(args, fmt);
         vfprintf(log->stream, fmt, args);
         va_end(args);
         fprintf(stderr, "\n");
+        pthread_mutex_unlock(log->lock);
 }
