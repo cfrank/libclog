@@ -46,6 +46,9 @@ enum log_level {
         LEVEL_CRITICAL
 };
 
+const char *log_level_to_string(enum log_level level);
+enum log_level string_to_log_level(const char *level_string);
+
 struct logger {
         enum log_level max_level;
         error_func_t error_handler_func;

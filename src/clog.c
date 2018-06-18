@@ -34,6 +34,26 @@
 
 #include "clog.h"
 
+const char *log_level_to_string(enum log_level level)
+{
+        switch(level) {
+        case LEVEL_TRACE:
+                return "TRACE";
+        case LEVEL_DEBUG:
+                return "DEBUG";
+        case LEVEL_INFO:
+                return "INFO";
+        case LEVEL_WARNING:
+                return "WARNING";
+        case LEVEL_ERROR:
+                return "ERROR";
+        case LEVEL_CRITICAL:
+                return "CRITICAL";
+        default:
+                return "";
+        }
+}
+
 struct logger *create_logger(void)
 {
         struct logger *logger = malloc(sizeof(struct logger));
@@ -93,13 +113,15 @@ void internal_logger(const struct logger *log, enum log_level level,
         }
 
         pthread_mutex_lock(log->lock);
-        fprintf(log->stream, "%s:%d ", file, line);
+
+        fprintf(log->stream, "%s:%d %s ", file, line, log_level_to_string(level));
 
         va_list args;
         va_start(args, fmt);
-        vfprintf(stderr, fmt, args);
+        vfprintf(log->stream, fmt, args);
         va_end(args);
-        fprintf(stderr, "\n");
+        fprintf(log->stream, "\n");
+
         pthread_mutex_unlock(log->lock);
 }
 
