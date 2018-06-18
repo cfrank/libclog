@@ -7,5 +7,7 @@ int main(void)
         LOG_ERROR(log, "An error has occured: %s", "Error Name");
         LOG_ERROR_SHORT(log, "A short error has occured: %s", log->name);
 
+        LOG_ERROR(log, "An error has occured - literally");
+
         destroy_logger(log);
 }
