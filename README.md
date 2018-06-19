@@ -11,6 +11,7 @@ struct logger *log = create_logger("MYLOGGER");
 
 LOG_ERROR(log, "Your %s", "Message");
 LOG_ERROR_SHORT(log, "Your Short %s", "Message");
+LOG_ERROR(log, "You can also pass static strings to either");
 
 destroy_logger(log);
 ```
