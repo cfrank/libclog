@@ -14,7 +14,7 @@ LOG_INFO(log, "Your %s", "Message");
 destroy_logger(log);
 
 ===
-[MYLOGGER:ERROR] (simple.c:12) - Your Message
+[MYLOGGER:ERROR] (myfile.c:123) - Your Message
 ===
 
 Build Requirements:
