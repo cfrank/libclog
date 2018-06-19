@@ -59,7 +59,7 @@ struct logger *create_logger(const char *name)
         struct logger *logger = malloc(sizeof(struct logger));
 
         if (logger == NULL) {
-                // TODO: Handle error
+                fputs("Could not allocate bytes for logger", stderr);
                 return NULL;
         }
 
@@ -117,7 +117,7 @@ void set_logging_quiet(struct logger *log, bool quiet)
 }
 
 void internal_logger(const struct logger *log, enum log_level level,
-                     const char *file, uint32_t line, const char *fmt, ...)
+                     const char *file, size_t line, const char *fmt, ...)
 {
         if (level < log->max_level) {
                 return;
@@ -126,9 +126,9 @@ void internal_logger(const struct logger *log, enum log_level level,
         pthread_mutex_lock(log->lock);
 
         fprintf(log->stream,
-                "%s:%s [%s:%d] - ",
-                log_level_to_string(level),
+                "[%s:%s] (%s:%zu) - ",
                 generate_logging_name(log->name),
+                log_level_to_string(level),
                 file,
                 line);
 
@@ -136,7 +136,8 @@ void internal_logger(const struct logger *log, enum log_level level,
         va_start(args, fmt);
         vfprintf(log->stream, fmt, args);
         va_end(args);
-        fprintf(log->stream, "\n");
+
+        fputs("\n", log->stream);
 
         pthread_mutex_unlock(log->lock);
 }
@@ -151,15 +152,16 @@ void internal_logger_short(const struct logger *log, enum log_level level,
         pthread_mutex_lock(log->lock);
 
         fprintf(log->stream,
-                "%s:%s - ",
-                log_level_to_string(level),
-                generate_logging_name(log->name));
+                "[%s:%s] - ",
+                generate_logging_name(log->name),
+                log_level_to_string(level));
 
         va_list args;
         va_start(args, fmt);
         vfprintf(log->stream, fmt, args);
         va_end(args);
-        fprintf(log->stream, "\n");
+
+        fputs("\n", log->stream);
 
         pthread_mutex_unlock(log->lock);
 }

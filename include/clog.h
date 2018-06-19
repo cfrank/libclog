@@ -50,10 +50,10 @@ static const char *log_level_to_string(enum log_level level);
 enum log_level string_to_log_level(const char *level_string);
 
 struct logger {
-        const char *name;
-        enum log_level max_level;
         error_func_t error_handler_func;
         pthread_mutex_t *lock;
+        enum log_level max_level;
+        const char *name;
         FILE *stream;
         bool quiet;
 };
@@ -67,7 +67,7 @@ void set_logging_error_func(struct logger *log,
 void set_logging_stream(struct logger *log, FILE *stream);
 void set_logging_quiet(struct logger *log, bool quiet);
 void internal_logger(const struct logger *log, enum log_level level,
-                     const char *file, uint32_t line, const char *fmt, ...);
+                     const char *file, size_t line, const char *fmt, ...);
 void internal_logger_short(const struct logger *log, enum log_level level,
                            const char *fmt, ...);
 
@@ -81,7 +81,8 @@ void internal_logger_short(const struct logger *log, enum log_level level,
         internal_logger_short(log, LEVEL_DEBUG, fmt, __VA_ARGS__);
 #define LOG_INFO(log, ...)                                                     \
         internal_logger(log, LEVEL_INFO, __FILE__, __LINE__, __VA_ARGS__);
-#define LOG_INFO_SHORT(log, ...) internal_logger(log, LEVEL_INFO, __VA_ARGS__);
+#define LOG_INFO_SHORT(log, ...)                                               \
+        internal_logger_short(log, LEVEL_INFO, __VA_ARGS__);
 #define LOG_WARNING(log, ...)                                                  \
         internal_logger(log, LEVEL_WARNING, __FILE__, __LINE__, __VA_ARGS__);
 #define LOG_WARNING_SHORT(log, ...)                                            \
