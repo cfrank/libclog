@@ -119,7 +119,7 @@ void set_logging_quiet(struct logger *log, bool quiet)
 void internal_logger(const struct logger *log, enum log_level level,
                      const char *file, size_t line, const char *fmt, ...)
 {
-        if (level < log->max_level) {
+        if (level < log->max_level || log->quiet) {
                 return;
         }
 
@@ -145,7 +145,7 @@ void internal_logger(const struct logger *log, enum log_level level,
 void internal_logger_short(const struct logger *log, enum log_level level,
                            const char *fmt, ...)
 {
-        if (level < log->max_level) {
+        if (level < log->max_level || log->quiet) {
                 return;
         }
 
