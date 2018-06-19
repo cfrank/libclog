@@ -1,6 +1,21 @@
 libclog
 
-A Simple C loggging library. Tries not to do too much.
+A Simple C logging library. Tries not to do too much.
+
+Example:
+========
+/* You can also install as a dynamic lib if you prefer */
+#include "clog.h"
+
+struct logger *log = create_logger("MYLOGGER");
+
+LOG_INFO(log, "Your %s", "Message");
+
+destroy_logger(log);
+
+===
+[MYLOGGER:ERROR] (simple.c:12) - Your Message
+===
 
 Build Requirements:
 ===================
