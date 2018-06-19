@@ -35,8 +35,6 @@
 #include <stdint.h>
 #include <stdio.h>
 
-typedef void (*error_func_t)(int error_status);
-
 enum log_level {
         LEVEL_TRACE = 312157,
         LEVEL_DEBUG,
@@ -45,6 +43,7 @@ enum log_level {
         LEVEL_ERROR,
         LEVEL_CRITICAL
 };
+typedef void (*error_func_t)(enum log_level level);
 
 static const char *log_level_to_string(enum log_level level);
 enum log_level string_to_log_level(const char *level_string);
@@ -92,7 +91,7 @@ void internal_logger_short(const struct logger *log, enum log_level level,
 #define LOG_ERROR_SHORT(log, ...)                                              \
         internal_logger_short(log, LEVEL_ERROR, __VA_ARGS__);
 #define LOG_CRITICAL(log, ...)                                                 \
-        internal_logger(log, LOG_CRITICAL, __FILE__, __LINE__, __VA_ARGS__);
+        internal_logger(log, LEVEL_CRITICAL, __FILE__, __LINE__, __VA_ARGS__);
 #define LOG_CRITICAL_SHORT(log, ...)                                           \
         internal_logger_short(log, LEVEL_CRITICAL, __VA_ARGS__);
 

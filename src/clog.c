@@ -139,6 +139,10 @@ void internal_logger(const struct logger *log, enum log_level level,
 
         fputs("\n", log->stream);
 
+        if (level >= LEVEL_ERROR) {
+                log->error_handler_func(level);
+        }
+
         pthread_mutex_unlock(log->lock);
 }
 
@@ -162,6 +166,10 @@ void internal_logger_short(const struct logger *log, enum log_level level,
         va_end(args);
 
         fputs("\n", log->stream);
+
+        if (level >= LEVEL_ERROR) {
+                log->error_handler_func(level);
+        }
 
         pthread_mutex_unlock(log->lock);
 }
