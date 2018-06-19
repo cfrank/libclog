@@ -139,7 +139,7 @@ void internal_logger(const struct logger *log, enum log_level level,
 
         fputs("\n", log->stream);
 
-        if (level >= LEVEL_ERROR) {
+        if (level >= LEVEL_ERROR && log->error_handler_func != NULL) {
                 log->error_handler_func(level);
         }
 
@@ -167,7 +167,7 @@ void internal_logger_short(const struct logger *log, enum log_level level,
 
         fputs("\n", log->stream);
 
-        if (level >= LEVEL_ERROR) {
+        if (level >= LEVEL_ERROR && log->error_handler_func != NULL) {
                 log->error_handler_func(level);
         }
 
