@@ -1,56 +1,52 @@
-libclog
+# libclog
 
 A Simple C logging library. Tries not to do too much.
 
-Example:
-========
+## Example:
+```c
 /* You can also install as a dynamic lib if you prefer */
 #include "clog.h"
 
 struct logger *log = create_logger("MYLOGGER");
 
-LOG_INFO(log, "Your %s", "Message");
+LOG_ERROR(log, "Your %s", "Message");
+LOG_ERROR_SHORT(log, "Your Short %s", "Message");
 
 destroy_logger(log);
+```
+> [MYLOGGER:ERROR] (myfile.c:123) - Your Message
+>
+> [MYLOGGER:ERROR] - Your Short Message
 
-===
-[MYLOGGER:ERROR] (myfile.c:123) - Your Message
-===
+## Build Requirements:
 
-Build Requirements:
-===================
+* CMake > 3.9
+* C99
 
-CMake > 3.9
-C99
-
-Requirements
-====================
+## Requirements:
 
 C99 Standard Library
 
-Install steps (recommended)
-===========
+## Install steps (recommended):
 
 The easiest way to use this is just to copy over the files and compile them
 along side your project.
 
-Library install steps
-=====================
+## Library install steps:
 
 I recommend doing an "out of source build" so that CMake generated files don't
 pollute the root directory. The following steps will assume that you are
 following that.
-
-    mkdir build;cd build
-    cmake ../
-    make
-    sudo make install
-
+```bash
+mkdir build;cd build
+cmake ../
+make
+sudo make install
+```
 The typical shared library files will be placed in their usual location, and can
-be viewed in the generated build/install_manifest.json file
+be viewed in the generated `build/install_manifest.json` file
 
-Contributing
-============
+## Contributing:
 
 Please set up your editor to either warn or automatically fix errors produced
 by clang-format. Or if not possible, just run clang format on your changes.
@@ -58,6 +54,7 @@ Also please follow the rules specified in .editor-config.
 
 Please, before making a pull request, make sure the following doesn't produce
 any errors:
-
-    cmake -DCMAKE_BUILD_TYPE=Debug <ROOT DIR LOCATION>
-    make
+```bash
+cmake -DCMAKE_BUILD_TYPE=Debug <ROOT DIR LOCATION>
+make
+```
