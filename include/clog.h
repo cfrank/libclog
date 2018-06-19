@@ -45,26 +45,30 @@ enum log_level {
 };
 typedef void (*error_func_t)(enum log_level level);
 
-static const char *log_level_to_string(enum log_level level);
-enum log_level string_to_log_level(const char *level_string);
-
 struct logger {
         error_func_t error_handler_func;
         pthread_mutex_t *lock;
-        enum log_level max_level;
+        enum log_level min_level;
         const char *name;
         FILE *stream;
         bool quiet;
 };
 
+/* Logging creation/destruction functions */
 struct logger *create_logger(const char *name);
 void destroy_logger(struct logger *log);
-const char *generate_logging_name(const char *name);
-void set_logging_max_level(struct logger *log, enum log_level level);
+
+/* Public setters */
+void set_logging_name(struct logger *log, const char *name);
+void set_logging_min_level(struct logger *log, enum log_level level);
 void set_logging_error_func(struct logger *log,
                             error_func_t error_handler_func);
 void set_logging_stream(struct logger *log, FILE *stream);
 void set_logging_quiet(struct logger *log, bool quiet);
+
+/* Internal functions */
+static const char *log_level_to_string(enum log_level level);
+static const char *generate_logging_name(const char *name);
 void internal_logger(const struct logger *log, enum log_level level,
                      const char *file, size_t line, const char *fmt, ...);
 void internal_logger_short(const struct logger *log, enum log_level level,

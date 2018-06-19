@@ -18,6 +18,59 @@ destroy_logger(log);
 >
 > [MYLOGGER:ERROR] - Your Short Message
 
+## Configuration
+```c
+/*
+ * When creating a logger you can specify a name which will be
+ * appended to all messages
+ *
+ * (defaults to: "CLOG")
+ */
+struct logger *create_logger(const char *name);
+```
+```c
+/*
+ * Rename the logger
+ *
+ * (defaults to: <whatever you named it during "create_logger">)
+ */
+void set_logger_name(struct logger *log, const char *name);
+```
+```c
+/* Set the minimum logging level to output
+ *
+ * (defaults to: LEVEL_ERROR)
+ */
+void set_logging_max_level(struct logger *log, enum log_level level);
+```
+```c
+/*
+ * Set a function which will be logged when a log with level >= LEVEL_ERROR
+ * occurs.
+ *
+ * (defaults to: NULL)
+ *
+ * error_func_t = void(*error_func_t)(enum log_level level)
+ */
+void set_logging_error_func(struct logger *log, error_func_t error_handler_func);
+```
+```c
+/* Set the stream with which logs will be output.
+ *
+ * (defaults to: stderr)
+ */
+void set_logging_stream(struct logger *log, FILE *stream);
+```
+```c
+/*
+ * Silence the logger - No logs will be output when quiet = true
+ *
+ * (defaults to: false)
+ */
+void set_logging_quiet(struct logger *log, bool quiet);
+```
+
+
 ## Build Requirements:
 
 * CMake > 3.9

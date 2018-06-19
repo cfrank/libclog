@@ -34,26 +34,6 @@
 
 #include "clog.h"
 
-static const char *log_level_to_string(enum log_level level)
-{
-        switch (level) {
-        case LEVEL_TRACE:
-                return "TRACE";
-        case LEVEL_DEBUG:
-                return "DEBUG";
-        case LEVEL_INFO:
-                return "INFO";
-        case LEVEL_WARNING:
-                return "WARNING";
-        case LEVEL_ERROR:
-                return "ERROR";
-        case LEVEL_CRITICAL:
-                return "CRITICAL";
-        default:
-                return "";
-        }
-}
-
 struct logger *create_logger(const char *name)
 {
         struct logger *logger = malloc(sizeof(struct logger));
@@ -66,7 +46,7 @@ struct logger *create_logger(const char *name)
         logger->name = name;
 
         /* Add some sensible defaults */
-        logger->max_level = LEVEL_ERROR;
+        logger->min_level = LEVEL_ERROR;
         logger->error_handler_func = NULL;
         logger->lock = malloc(sizeof(pthread_mutex_t));
 
@@ -87,18 +67,14 @@ void destroy_logger(struct logger *log)
         free(log);
 }
 
-const char *generate_logging_name(const char *name)
+void set_logging_name(struct logger *log, const char *name)
 {
-        if (name == NULL) {
-                return "CLOG";
-        }
-
-        return name;
+        log->name = name;
 }
 
-void set_logging_max_level(struct logger *log, enum log_level level)
+void set_logging_min_level(struct logger *log, enum log_level level)
 {
-        log->max_level = level;
+        log->min_level = level;
 }
 
 void set_logging_error_func(struct logger *log, error_func_t error_handler_func)
@@ -116,10 +92,39 @@ void set_logging_quiet(struct logger *log, bool quiet)
         log->quiet = quiet;
 }
 
+static const char *log_level_to_string(enum log_level level)
+{
+        switch (level) {
+        case LEVEL_TRACE:
+                return "TRACE";
+        case LEVEL_DEBUG:
+                return "DEBUG";
+        case LEVEL_INFO:
+                return "INFO";
+        case LEVEL_WARNING:
+                return "WARNING";
+        case LEVEL_ERROR:
+                return "ERROR";
+        case LEVEL_CRITICAL:
+                return "CRITICAL";
+        default:
+                return "";
+        }
+}
+
+static const char *generate_logging_name(const char *name)
+{
+        if (name == NULL) {
+                return "CLOG";
+        }
+
+        return name;
+}
+
 void internal_logger(const struct logger *log, enum log_level level,
                      const char *file, size_t line, const char *fmt, ...)
 {
-        if (level < log->max_level || log->quiet) {
+        if (level < log->min_level || log->quiet) {
                 return;
         }
 
@@ -149,7 +154,7 @@ void internal_logger(const struct logger *log, enum log_level level,
 void internal_logger_short(const struct logger *log, enum log_level level,
                            const char *fmt, ...)
 {
-        if (level < log->max_level || log->quiet) {
+        if (level < log->min_level || log->quiet) {
                 return;
         }
 

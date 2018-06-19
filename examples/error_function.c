@@ -14,7 +14,7 @@ int main(void)
 {
         struct logger *log = create_logger("error_function");
 
-        set_logging_max_level(log, LEVEL_INFO);
+        set_logging_min_level(log, LEVEL_INFO);
         set_logging_error_func(log, handle_error);
 
         LOG_CRITICAL(log, "There has been a critical error!");

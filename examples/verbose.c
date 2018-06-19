@@ -5,11 +5,11 @@ int main(void)
 {
         struct logger *log = create_logger("verbose");
 
-        set_logging_max_level(log, LEVEL_TRACE);
+        set_logging_min_level(log, LEVEL_TRACE);
 
         LOG_TRACE(log, "By default this message would %s be shown", "not");
 
-        set_logging_max_level(log, LEVEL_ERROR);
+        set_logging_min_level(log, LEVEL_ERROR);
 
         /*
          * Because we set the max logging level to LEVEL_ERROR above
