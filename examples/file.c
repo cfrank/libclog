@@ -17,6 +17,7 @@ int main(void)
         LOG_ERROR(log, "Logging to file %s", "log.txt");
         LOG_CRITICAL(log, "This was a critical error");
 
+        fclose(f);
         destroy_logger(log);
 
         return EXIT_SUCCESS;
