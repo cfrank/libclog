@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.9)
 
 project(clog
-    VERSION 0.0.1
+    VERSION 0.1.0
     DESCRIPTION "A simple C logging library"
     LANGUAGES C
 )
