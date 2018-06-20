@@ -18,6 +18,8 @@ destroy_logger(log);
 > [MYLOGGER:ERROR] (myfile.c:123) - Your Message
 >
 > [MYLOGGER:ERROR] - Your Short Message
+>
+> [MYLOGGER:ERROR] (myfile.c:123) - You can also pass static strings to either
 
 ## Configuration
 ```c
