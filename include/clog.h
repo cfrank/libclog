@@ -47,7 +47,6 @@ typedef void (*error_func_t)(enum log_level level);
 
 struct logger {
         error_func_t error_handler_func;
-        pthread_mutex_t *lock;
         enum log_level min_level;
         const char *name;
         FILE *stream;

@@ -54,10 +54,6 @@ struct logger *create_logger(const char *name)
         /* Add some sensible defaults */
         logger->min_level = LEVEL_ERROR;
         logger->error_handler_func = NULL;
-        logger->lock = malloc(sizeof(pthread_mutex_t));
-
-        pthread_mutex_init(logger->lock, NULL);
-
         logger->stream = stderr;
         logger->quiet = false;
 
@@ -66,10 +62,6 @@ struct logger *create_logger(const char *name)
 
 void destroy_logger(struct logger *log)
 {
-        pthread_mutex_destroy(log->lock);
-
-        free(log->lock);
-
         free(log);
 }
 
@@ -135,8 +127,6 @@ void internal_logger(const struct logger *log, enum log_level level,
                 return;
         }
 
-        pthread_mutex_lock(log->lock);
-
         fprintf(log->stream,
                 "[%s:%s] (%s:%zu) - ",
                 generate_logging_name(log->name),
@@ -154,8 +144,6 @@ void internal_logger(const struct logger *log, enum log_level level,
         if (level >= LEVEL_ERROR && log->error_handler_func != NULL) {
                 log->error_handler_func(level);
         }
-
-        pthread_mutex_unlock(log->lock);
 }
 
 ATTR_PRINTF(3)
@@ -165,8 +153,6 @@ void internal_logger_short(const struct logger *log, enum log_level level,
         if (level < log->min_level || log->quiet) {
                 return;
         }
-
-        pthread_mutex_lock(log->lock);
 
         fprintf(log->stream,
                 "[%s:%s] - ",
@@ -183,6 +169,4 @@ void internal_logger_short(const struct logger *log, enum log_level level,
         if (level >= LEVEL_ERROR && log->error_handler_func != NULL) {
                 log->error_handler_func(level);
         }
-
-        pthread_mutex_unlock(log->lock);
 }
