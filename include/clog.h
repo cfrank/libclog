@@ -67,8 +67,6 @@ void set_logging_stream(struct logger *log, FILE *stream);
 void set_logging_quiet(struct logger *log, bool quiet);
 
 /* Internal functions */
-static const char *log_level_to_string(enum log_level level);
-static const char *generate_logging_name(const char *name);
 void internal_logger(const struct logger *log, enum log_level level,
                      const char *file, size_t line, const char *fmt, ...);
 void internal_logger_short(const struct logger *log, enum log_level level,
