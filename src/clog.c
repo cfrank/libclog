@@ -34,6 +34,12 @@
 
 #include "clog.h"
 
+#if defined __clang__ || defined __GNUC__
+#define ATTR_PRINTF(idx) __attribute__((format(printf, idx, 0)))
+#else
+#define ATTR_PRINTF(idx)
+#endif
+
 struct logger *create_logger(const char *name)
 {
         struct logger *logger = malloc(sizeof(struct logger));
@@ -121,6 +127,7 @@ static const char *generate_logging_name(const char *name)
         return name;
 }
 
+ATTR_PRINTF(5)
 void internal_logger(const struct logger *log, enum log_level level,
                      const char *file, size_t line, const char *fmt, ...)
 {
@@ -151,6 +158,7 @@ void internal_logger(const struct logger *log, enum log_level level,
         pthread_mutex_unlock(log->lock);
 }
 
+ATTR_PRINTF(3)
 void internal_logger_short(const struct logger *log, enum log_level level,
                            const char *fmt, ...)
 {
