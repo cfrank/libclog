@@ -18,10 +18,12 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 set(HEADER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-add_library(clog INTERFACE)
+add_library(clog
+    src/clog.c
+)
 
-target_include_directories(clog INTERFACE
-    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+target_include_directories(clog PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
 
