@@ -6,7 +6,7 @@ if(NOT DEFINED PROJECT_NAME)
 endif()
 
 project(clog
-    VERSION 0.2.0
+    VERSION 1.0.0
     DESCRIPTION "A simple C logging library"
     LANGUAGES C
 )
