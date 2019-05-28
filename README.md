@@ -10,16 +10,16 @@ A Simple C logging library. Tries not to do too much.
 struct logger *log = create_logger("MYLOGGER");
 
 LOG_ERROR(log, "Your %s", "Message");
-LOG_ERROR_SHORT(log, "Your Short %s", "Message");
+LOG_ERROR_LONG(log, "Your Short %s", "Message");
 LOG_ERROR(log, "You can also pass static strings to either");
 
 destroy_logger(log);
 ```
-> [MYLOGGER:ERROR] (myfile.c:123) - Your Message
+> [MYLOGGER:ERROR] - Your Message
 >
-> [MYLOGGER:ERROR] - Your Short Message
+> [MYLOGGER:ERROR] (myfile.c:123) - Your Long Message
 >
-> [MYLOGGER:ERROR] (myfile.c:123) - You can also pass static strings to either
+> [MYLOGGER:ERROR] - You can also pass static strings to either
 
 ## Configuration
 ```c

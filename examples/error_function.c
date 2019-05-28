@@ -17,11 +17,10 @@ int main(void)
         set_logging_min_level(log, LEVEL_INFO);
         set_logging_error_func(log, handle_error);
 
-        LOG_CRITICAL(log, "There has been a critical error!");
+        LOG_CRITICAL_LONG(log, "There has been a critical error!");
 
         if (error_occured) {
-                LOG_INFO_SHORT(log,
-                               "The error handler function has been called");
+                LOG_INFO(log, "The error handler function has been called");
         }
 
         destroy_logger(log);
