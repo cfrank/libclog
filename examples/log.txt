@@ -1,2 +1,2 @@
-[file:ERROR] (file.c:17) - Logging to file log.txt
+[file:ERROR] - Logging to file log.txt
 [file:CRITICAL] (file.c:18) - This was a critical error

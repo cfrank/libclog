@@ -67,33 +67,30 @@ void set_logging_quiet(struct logger *log, bool quiet);
 
 /* Internal functions */
 void internal_logger(const struct logger *log, enum log_level level,
-                     const char *file, size_t line, const char *fmt, ...);
-void internal_logger_short(const struct logger *log, enum log_level level,
-                           const char *fmt, ...);
+                     const char *fmt, ...);
+void internal_logger_long(const struct logger *log, enum log_level level,
+                          const char *file, size_t line, const char *fmt, ...);
 
-#define LOG_TRACE(log, ...)                                                    \
-        internal_logger(log, LEVEL_TRACE, __FILE__, __LINE__, __VA_ARGS__);
-#define LOG_TRACE_SHORT(log, ...)                                              \
-        internal_logger_short(log, LEVEL_TRACE, __VA_ARGS__);
-#define LOG_DEBUG(log, ...)                                                    \
-        internal_logger(log, LEVEL_DEBUG, __FILE__, __LINE__, __VA_ARGS__);
-#define LOG_DEBUG_SHORT(log, ...)                                              \
-        internal_logger_short(log, LEVEL_DEBUG, fmt, __VA_ARGS__);
-#define LOG_INFO(log, ...)                                                     \
-        internal_logger(log, LEVEL_INFO, __FILE__, __LINE__, __VA_ARGS__);
-#define LOG_INFO_SHORT(log, ...)                                               \
-        internal_logger_short(log, LEVEL_INFO, __VA_ARGS__);
-#define LOG_WARNING(log, ...)                                                  \
-        internal_logger(log, LEVEL_WARNING, __FILE__, __LINE__, __VA_ARGS__);
-#define LOG_WARNING_SHORT(log, ...)                                            \
-        internal_logger_short(log, LEVEL_WARNING, __VA_ARGS__);
-#define LOG_ERROR(log, ...)                                                    \
-        internal_logger(log, LEVEL_ERROR, __FILE__, __LINE__, __VA_ARGS__);
-#define LOG_ERROR_SHORT(log, ...)                                              \
-        internal_logger_short(log, LEVEL_ERROR, __VA_ARGS__);
+#define LOG_TRACE(log, ...) internal_logger(log, LEVEL_TRACE, __VA_ARGS__);
+#define LOG_TRACE_LONG(log, ...)                                               \
+        internal_logger_long(log, LEVEL_TRACE, __FILE__, __LINE__, __VA_ARGS__);
+#define LOG_DEBUG(log, ...) internal_logger(log, LEVEL_DEBUG, fmt, __VA_ARGS__);
+#define LOG_DEBUG_LONG(log, ...)                                               \
+        internal_logger_long(log, LEVEL_DEBUG, __FILE__, __LINE__, __VA_ARGS__);
+#define LOG_INFO(log, ...) internal_logger(log, LEVEL_INFO, __VA_ARGS__);
+#define LOG_INFO_LONG(log, ...)                                                \
+        internal_logger_long(log, LEVEL_INFO, __FILE__, __LINE__, __VA_ARGS__);
+#define LOG_WARNING(log, ...) internal_logger(log, LEVEL_WARNING, __VA_ARGS__);
+#define LOG_WARNING_LONG(log, ...)                                             \
+        internal_logger_long(                                                  \
+                log, LEVEL_WARNING, __FILE__, __LINE__, __VA_ARGS__);
+#define LOG_ERROR(log, ...) internal_logger(log, LEVEL_ERROR, __VA_ARGS__);
+#define LOG_ERROR_LONG(log, ...)                                               \
+        internal_logger_long(log, LEVEL_ERROR, __FILE__, __LINE__, __VA_ARGS__);
 #define LOG_CRITICAL(log, ...)                                                 \
-        internal_logger(log, LEVEL_CRITICAL, __FILE__, __LINE__, __VA_ARGS__);
-#define LOG_CRITICAL_SHORT(log, ...)                                           \
-        internal_logger_short(log, LEVEL_CRITICAL, __VA_ARGS__);
+        internal_logger(log, LEVEL_CRITICAL, __VA_ARGS__);
+#define LOG_CRITICAL_LONG(log, ...)                                            \
+        internal_logger_long(                                                  \
+                log, LEVEL_CRITICAL, __FILE__, __LINE__, __VA_ARGS__);
 
 #endif /* CLOG_H */

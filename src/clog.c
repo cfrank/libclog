@@ -119,20 +119,18 @@ static const char *generate_logging_name(const char *name)
         return name;
 }
 
-ATTR_PRINTF(5)
+ATTR_PRINTF(3)
 void internal_logger(const struct logger *log, enum log_level level,
-                     const char *file, size_t line, const char *fmt, ...)
+                     const char *fmt, ...)
 {
         if (level < log->min_level || log->quiet) {
                 return;
         }
 
         fprintf(log->stream,
-                "[%s:%s] (%s:%zu) - ",
+                "[%s:%s] - ",
                 generate_logging_name(log->name),
-                log_level_to_string(level),
-                file,
-                line);
+                log_level_to_string(level));
 
         va_list args;
         va_start(args, fmt);
@@ -146,18 +144,20 @@ void internal_logger(const struct logger *log, enum log_level level,
         }
 }
 
-ATTR_PRINTF(3)
-void internal_logger_short(const struct logger *log, enum log_level level,
-                           const char *fmt, ...)
+ATTR_PRINTF(5)
+void internal_logger_long(const struct logger *log, enum log_level level,
+                          const char *file, size_t line, const char *fmt, ...)
 {
         if (level < log->min_level || log->quiet) {
                 return;
         }
 
         fprintf(log->stream,
-                "[%s:%s] - ",
+                "[%s:%s] (%s:%zu) - ",
                 generate_logging_name(log->name),
-                log_level_to_string(level));
+                log_level_to_string(level),
+                file,
+                line);
 
         va_list args;
         va_start(args, fmt);
